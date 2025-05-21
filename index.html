@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نادي العلوم الفيزيائية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-color: #0056b3; /* أزرق أغمق قليلاً */
+            --secondary-color: #0a9396; /* تركواز */
+            --accent-color: #ee9b00; /* برتقالي */
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #f8f9fa;
+            --card-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            --border-radius: 10px;
+            --header-height: 70px;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.7;
+            direction: rtl;
+            padding-top: var(--header-height); /* Prevent content from hiding behind fixed header */
+        }
+
+        header {
+            background-color: #fff;
+            padding: 0 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed; /* Fixed header */
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo-icon {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-left: 12px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .menu-toggle {
+            display: none; /* Hidden by default, shown on small screens */
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--dark-text);
+            cursor: pointer;
+        }
+
+        .main-nav {
+            display: flex;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .main-nav li {
+            margin-right: 25px; /* RTL: margin-right */
+        }
+        .main-nav li:last-child {
+            margin-right: 0;
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover, .main-nav a.active-link {
+            color: var(--primary-color);
+        }
+        .main-nav a:hover::after, .main-nav a.active-link::after {
+            width: 100%;
+        }
+
+
+        main {
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto; /* Centering main content */
+        }
+
+        section {
+            padding: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        section.active-section {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        section.inactive-section {
+            display: none;
+            opacity: 0;
+        }
+
+
+        section h2 {
+            text-align: center;
+            margin-bottom: 35px;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .level-card {
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .level-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+
+        .level-card .color-bar {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: height 0.3s ease;
+        }
+        .level-card:hover .color-bar {
+            height: 60px;
+        }
+
+        .level-card .level-number {
+            font-size: 2.3rem;
+            font-weight: bold;
+            color: var(--light-text);
+        }
+
+        .level-card-content {
+            padding: 20px;
+            flex-grow: 1; /* Make content take available space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .level-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            color: var(--dark-text);
+            font-weight: 600;
+        }
+
+        .level-card p {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--secondary-color);
+        }
+
+        /* Resource View */
+        #resource-level-info {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: var(--border-radius);
+        }
+
+        #back-to-levels-btn {
+            background-color: var(--accent-color);
+            color: var(--dark-text);
+            font-weight: 600;
+            border: none;
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            /* margin-bottom: 25px; */ /* Removed to be handled by flex container */
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        #back-to-levels-btn i {
+            margin-left: 10px;
+        }
+        #back-to-levels-btn:hover {
+            background-color: #d48200; /* Darken accent color */
+            transform: scale(1.05);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 25px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        }
+
+        .resource-card .resource-icon {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            display: block;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            border-radius: 50%;
+            color: #fff;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .resource-card:hover .resource-icon {
+            transform: scale(1.1);
+        }
+        p.no-resources {
+            grid-column: 1 / -1; /* Span across all columns if grid is used */
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            padding: 20px;
+        }
+        /* Useful Links Section */
+        .useful-links-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .useful-links-list li a {
+            display: block;
+            padding: 15px 20px;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .useful-links-list li a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+            color: var(--primary-color);
+        }
+        .useful-links-list li a i {
+            margin-left: 12px;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+        }
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 25px 30px;
+            border: 1px solid #ddd;
+            width: 80%;
+            max-width: 700px; /* Increased max-width for better content display */
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal-btn {
+            color: #aaa;
+            float: left; /* RTL: float left */
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 15px;
+            left: 20px; /* RTL: left */
+        }
+
+        .close-modal-btn:hover,
+        .close-modal-btn:focus {
+            color: var(--dark-text);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #modalTitle, #addModalTitle { /* Apply to both modal titles */
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        #modalDescription {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        #modalBody {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-height: 60vh; /* Limit height for text content */
+            overflow-y: auto; /* Add scroll for long text */
+        }
+        .modal-actions {
+            margin-top: 25px;
+            text-align: left; /* Align actions to the left for RTL */
+        }
+        .modal-action-btn {
+            display: inline-flex; /* Changed to inline-flex */
+            align-items: center; /* Align icon and text */
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-left: 10px; /* RTL */
+            font-size: 1rem;
+            border: none; /* ensure it looks like a button */
+            cursor: pointer; /* ensure it has a pointer */
+        }
+        .modal-action-btn i {
+            margin-left: 8px; /* RTL - space between icon and text */
+        }
+        .modal-action-btn:hover {
+            background-color: #08797D; /* Darken secondary color */
+        }
+
+        /* Add Resource Button Styling */
+        #add-resource-btn {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        #add-resource-btn i {
+            margin-left: 8px;
+        }
+        #add-resource-btn:hover {
+            background-color: #004085; /* أزرق أغمق قليلاً عند المرور */
+            transform: scale(1.05);
+        }
+        
+        /* Form Styling inside Add Resource Modal */
+        #addResourceForm .form-group {
+            margin-bottom: 15px;
+        }
+
+        #addResourceForm label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+
+        #addResourceForm input[type="text"],
+        #addResourceForm input[type="url"],
+        #addResourceForm input[type="file"],
+        #addResourceForm select,
+        #addResourceForm textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            margin-top: 3px;
+        }
+
+        #addResourceForm input[type="file"] {
+            padding: 5px;
+        }
+
+        #addResourceForm button[type="submit"] {
+            /* Re-use .modal-action-btn styles for consistency */
+            /* display: inline-flex;
+            align-items: center;
+            border: none;
+            cursor: pointer; */
+        }
+        /* #addResourceForm button[type="submit"] i {
+            margin-left: 8px; 
+        } */
+
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background-color: var(--dark-text);
+            color: var(--light-text);
+            margin-top: 50px;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .levels-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            .resources-grid, .useful-links-list {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: calc(var(--header-height) + 10px); /* Adjust if menu is taller */
+            }
+            .menu-toggle {
+                display: block; /* Show hamburger icon */
+                z-index: 1002; /* Above nav */
+            }
+            .main-nav {
+                position: fixed;
+                top: 0;
+                right: -100%; /* Start off-screen for RTL */
+                width: 280px;
+                height: 100vh;
+                background-color: #fff;
+                box-shadow: -2px 0 5px rgba(0,0,0,0.1); /* Shadow on the left for RTL */
+                padding-top: calc(var(--header-height) + 20px);
+                transition: right 0.3s ease-in-out; /* Slide from right for RTL */
+                z-index: 1001; /* Below toggle but above content */
+                overflow-y: auto;
+            }
+            .main-nav.active {
+                right: 0; /* Slide in for RTL */
+            }
+            .main-nav ul {
+                flex-direction: column;
+            }
+            .main-nav li {
+                margin-right: 0;
+                width: 100%;
+            }
+            .main-nav a {
+                display: block;
+                padding: 15px 25px;
+                border-bottom: 1px solid #eee;
+            }
+            .main-nav a::after {
+                display: none; /* No underline for mobile nav items */
+            }
+            .main-nav li:last-child a {
+                border-bottom: none;
+            }
+
+            header h1 {
+                font-size: 1.3rem;
+            }
+            .header-logo-icon {
+                font-size: 1.8rem;
+            }
+            main {
+                padding: 20px 15px;
+            }
+            section h2 {
+                font-size: 1.8rem;
+            }
+            .modal-content {
+                width: 90%;
+                margin: 15% auto;
+            }
+             .resources-grid, .useful-links-list {
+                grid-template-columns: 1fr; /* Single column on small screens */
+            }
+            /* Adjust resource view header for small screens */
+            #resource-view .flex-container-resource-header {
+                flex-direction: column;
+                align-items: stretch; /* Make buttons full width */
+            }
+            #resource-view .flex-container-resource-header #add-resource-btn {
+                margin-left: 0; /* Reset margin for stacked layout */
+                margin-top: 10px; /* Add space between buttons */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <i class="fas fa-atom header-logo-icon"></i>
+            <h1>نادي العلوم الفيزيائية</h1>
+        </div>
+        <button class="menu-toggle" aria-label="فتح القائمة" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#level-selection" class="nav-link">اختيار الشعبة</a></li>
+                <li><a href="#useful-links" class="nav-link">روابط مفيدة</a></li>
+                <li><a href="#about-club" class="nav-link">عن النادي</a></li>
+                <li><a href="#contact-us" class="nav-link">اتصل بنا</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="level-selection" class="active-section">
+            <h2>اختر الشعبة واستفد مع النادي</h2>
+            <div class="levels-grid">
+                <!-- البطاقات هنا -->
+            </div>
+        </section>
+
+        <section id="resource-view" class="inactive-section">
+            <div class="flex-container-resource-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                <button id="back-to-levels-btn" aria-label="الرجوع لاختيار الشعبة">
+                    <i class="fas fa-arrow-right"></i> الرجوع
+                </button>
+                <button id="add-resource-btn"> <!-- Removed class and inline style, will be styled by CSS -->
+                    <i class="fas fa-plus"></i> إضافة مورد
+                </button>
+            </div>
+            <h2 id="resource-title-heading">موارد الشعبة</h2>
+            <div id="resource-level-info"></div>
+            <div class="resources-grid">
+                <!-- بطاقات الموارد هنا -->
+            </div>
+        </section>
+
+        <section id="useful-links" class="inactive-section">
+            <h2>مواقع وروابط تعليمية هامة</h2>
+            <ul class="useful-links-list">
+                <!-- الروابط الهامة ستضاف هنا بواسطة JavaScript -->
+            </ul>
+        </section>
+
+        <section id="about-club" class="inactive-section">
+            <h2>عن نادي العلوم الفيزيائية</h2>
+            <p>نادي العلوم الفيزيائية هو مبادرة طلابية تهدف إلى تعزيز فهم مادة الفيزياء وتبسيط مفاهيمها لجميع المستويات. نسعى لتوفير بيئة تعليمية تفاعلية وموارد قيمة تساعد الطلاب على التفوق الدراسي واكتشاف جمال الفيزياء.</p>
+            <p>مهمتنا هي جعل الفيزياء مادة ممتعة وسهلة الفهم من خلال تقديم شروحات مبسطة، تمارين تطبيقية، وموارد تعليمية متنوعة.</p>
+        </section>
+
+        <section id="contact-us" class="inactive-section">
+            <h2>اتصل بنا</h2>
+            <p>إذا كانت لديك أي أسئلة، اقتراحات، أو ترغب في المساهمة في النادي، يمكنك التواصل معنا عبر البريد الإلكتروني: <a href="mailto:physicsclub@example.com">physicsclub@example.com</a></p>
+            <p>يمكنك أيضًا متابعتنا على وسائل التواصل الاجتماعي (روابط افتراضية):</p>
+            <ul class="useful-links-list" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                 <li><a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-square"></i> فيسبوك</a></li>
+                 <li><a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i> يوتيوب</a></li>
+                 <li><a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> انستغرام</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <div id="resourceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal-btn">&times;</span>
+            <h3 id="modalTitle">عنوان المورد</h3>
+            <p id="modalDescription"></p>
+            <div id="modalBody">
+                <!-- محتوى نصي هنا -->
+            </div>
+            <div class="modal-actions">
+                <a href="#" id="modalActionLink" class="modal-action-btn" target="_blank" rel="noopener noreferrer" style="display:none;">
+                    <i class="fas fa-external-link-alt"></i> <span>فتح / تحميل</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal لإضافة مورد جديد -->
+    <div id="addResourceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal-btn" id="closeAddResourceModalBtn">&times;</span>
+            <h3 id="addModalTitle">إضافة مورد جديد</h3>
+            <form id="addResourceForm">
+                <div class="form-group">
+                    <label for="resourceNameInput">اسم المورد:</label>
+                    <input type="text" id="resourceNameInput" name="resourceName" required>
+                </div>
+                <div class="form-group">
+                    <label for="resourceTypeSelect">نوع المورد:</label>
+                    <select id="resourceTypeSelect" name="resourceType" required>
+                        <option value="uploadedFile">رفع ملف (مؤقتًا في المتصفح)</option>
+                        <option value="driveLink">رابط Google Drive</option>
+                        <option value="link">رابط خارجي عام</option>
+                        <option value="text">محتوى نصي</option>
+                    </select>
+                </div>
+                <div class="form-group" id="fileUploadGroup">
+                    <label for="resourceFileInput">اختر ملفًا:</label>
+                    <input type="file" id="resourceFileInput" name="resourceFile">
+                </div>
+                <div class="form-group" id="linkInputGroup" style="display:none;">
+                    <label for="resourceLinkInput">أدخل الرابط:</label>
+                    <input type="url" id="resourceLinkInput" name="resourceLink" placeholder="https://...">
+                </div>
+                 <div class="form-group" id="textContentGroup" style="display:none;">
+                    <label for="resourceTextInput">المحتوى النصي:</label>
+                    <textarea id="resourceTextInput" name="resourceTextContent" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="resourceDescriptionInputModal">وصف قصير (اختياري):</label>
+                    <textarea id="resourceDescriptionInputModal" name="resourceDescription" rows="3"></textarea>
+                </div>
+                <button type="submit" class="modal-action-btn" style="background-color: var(--secondary-color);">
+                    <i class="fas fa-save"></i> حفظ المورد
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="currentYear"></span> نادي العلوم الفيزيائية. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const levelsGrid = document.querySelector('.levels-grid');
+            const levelSelectionSection = document.getElementById('level-selection');
+            const resourceViewSection = document.getElementById('resource-view');
+            const resourceTitleHeading = document.getElementById('resource-title-heading');
+            const resourceLevelInfo = document.getElementById('resource-level-info');
+            const resourcesGridEl = document.querySelector('#resource-view .resources-grid');
+            const backToLevelsBtn = document.getElementById('back-to-levels-btn');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            const currentYearEl = document.getElementById('currentYear');
+            const navLinks = document.querySelectorAll('.main-nav a.nav-link');
+            const sections = document.querySelectorAll('main section');
+
+            const modal = document.getElementById('resourceModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalBody = document.getElementById('modalBody');
+            const modalActionLink = document.getElementById('modalActionLink');
+            const modalActionLinkText = modalActionLink.querySelector('span');
+            const modalActionLinkIcon = modalActionLink.querySelector('i');
+            const closeModalBtn = document.querySelector('#resourceModal .close-modal-btn'); // Specific close button
+
+            const addResourceBtn = document.getElementById('add-resource-btn');
+            const addResourceModal = document.getElementById('addResourceModal');
+            const closeAddResourceModalBtn = document.getElementById('closeAddResourceModalBtn');
+            const addResourceForm = document.getElementById('addResourceForm');
+            const resourceTypeSelect = document.getElementById('resourceTypeSelect');
+            const fileUploadGroup = document.getElementById('fileUploadGroup');
+            const linkInputGroup = document.getElementById('linkInputGroup');
+            const textContentGroup = document.getElementById('textContentGroup');
+            const resourceFileInput = document.getElementById('resourceFileInput');
+            const resourceLinkInput = document.getElementById('resourceLinkInput');
+            const resourceTextInput = document.getElementById('resourceTextInput');
+            const resourceNameInput = document.getElementById('resourceNameInput');
+            const resourceDescriptionInputModal = document.getElementById('resourceDescriptionInputModal');
+            const addModalTitleEl = document.getElementById('addModalTitle');
+
+             const levels = [
+                { id: "1st_scitech", name: "أولى ثانوي جذع مشترك علوم وتكنولوجيا", subtitle: "جذع مشترك", color: "#28a745", icon: "fa-flask" },
+                { id: "1st_arts", name: "أولى ثانوي جذع مشترك آداب", subtitle: "جذع مشترك", color: "#ffc107", icon: "fa-landmark" },
+                { id: "2nd_sciexp", name: "ثانية علوم تجريبية", subtitle: "شعبة علمية", color: "#17a2b8", icon: "fa-dna" },
+                { id: "2nd_techmath", name: "ثانية تقني رياضي ورياضيات", subtitle: "شعبة تقنية", color: "#fd7e14", icon: "fa-cogs" },
+                { id: "2nd_artsphil", name: "ثانية آداب وفلسفة", subtitle: "شعبة أدبية", color: "#6f42c1", icon: "fa-book-reader" },
+                { id: "3rd_sciexp", name: "ثالثة علوم تجريبية", subtitle: "بكالوريا علمي", color: "#dc3545", icon: "fa-microscope" },
+                { id: "3rd_techmath", name: "ثالثة تقني رياضي ورياضيات", subtitle: "بكالوريا تقني", color: "#20c997", icon: "fa-calculator" }
+            ];
+
+            let currentAddingLevelId = null;
+            let currentSelectedLevelData = null;
+
+            let resources = JSON.parse(localStorage.getItem('clubResources')) || {
+                "1st_scitech": [
+                    { type: "فروض", name: "فرض الفصل الأول (PDF)", icon: "fa-file-pdf", color: "#dc3545", sourceType: "file", sourceValue: "files/1st_scitech_exam1.pdf", description: "فرض شامل للفصل الأول بصيغة PDF." },
+                    { type: "مذكرات", name: "ملخص الوحدة الأولى (نصي)", icon: "fa-file-alt", color: "#6610f2", sourceType: "text", sourceValue: "هذا ملخص نصي للوحدة الأولى يتناول بنية أفراد بعض الأنواع الكيميائية، مكونات الذرة، الجدول الدوري للعناصر، والتوزيع الإلكتروني.", description: "ملخص نصي مباشر لأهم نقاط الوحدة الأولى." },
+                    { type: "تمارين", name: "سلسلة تمارين (Word)", icon: "fa-file-word", color: "#007bff", sourceType: "file", sourceValue: "files/1st_scitech_exercises.docx", description: "سلسلة تمارين تطبيقية بصيغة Word قابلة للتعديل." },
+                    { type: "رابط خارجي", name: "شرح تفاعلي: الجدول الدوري", icon: "fa-link", color: "#17a2b8", sourceType: "link", sourceValue: "https://ptable.com/?lang=ar", description: "رابط لموقع تفاعلي للجدول الدوري للعناصر." }
+                ],
+                "1st_arts": [
+                    { type: "مذكرات", name: "ملخص تاريخ الجزائر (PDF)", icon: "fa-file-pdf", color: "#ffc107", sourceType: "file", sourceValue: "files/1st_arts_history.pdf", description: "ملخص لأهم أحداث تاريخ الجزائر الحديث." },
+                    { type: "رابط خارجي", name: "المكتبة الرقمية الجزائرية", icon: "fa-book-reader", color: "#6f42c1", sourceType: "link", sourceValue: "http://www.biblionat.dz/", description: "رابط للمكتبة الوطنية الجزائرية الرقمية." }
+                ],
+                 "2nd_sciexp": [
+                    { type: "اختبارات", name: "اختبار الفيزياء (PDF)", icon: "fa-file-pdf", color: "#dc3545", sourceType: "file", sourceValue: "files/2nd_sciexp_physics_test.pdf", description: "اختبار في مادة الفيزياء لوحدة الميكانيك والطاقة." },
+                    { type: "مذكرات", name: "ملخص وحدة التنظيم الهرموني (نصي)", icon: "fa-file-alt", color: "#17a2b8", sourceType: "text", sourceValue: "مفاهيم أساسية حول التنظيم الهرموني، الغدد الصماء، وأنواع الهرمونات وتأثيرها.", description: "ملخص نصي لوحدة التنظيم الهرموني." },
+                    { type: "رابط خارجي", name: "محاكاة تجارب الفيزياء (PhET)", icon: "fa-flask", color: "#28a745", sourceType: "link", sourceValue: "https://phet.colorado.edu/ar/", description: "موقع PhET للمحاكاة التفاعلية في الفيزياء والكيمياء." }
+                ],
+            };
+
+            const usefulLinksData = [
+                { name: "الموقع الأول للدراسة في الجزائر", url: "https://www.ency-education.com/", icon: "fa-graduation-cap", category: "عام" },
+                { name: "ديوان الوطني للامتحانات والمسابقات (ONEC)", url: "http://www.onec.dz/", icon: "fa-file-signature", category: "رسمي" },
+                { name: "موقع وزارة التربية الوطنية الجزائرية", url: "https://www.education.gov.dz/", icon: "fa-landmark", category: "رسمي" },
+                { name: "موقع الدراسة والتعليم في الجزائر (DzExams)", url: "https://www.dzexams.com/", icon: "fa-book-reader", category: "عام" },
+                { name: "موقع قزوري للرياضيات والفيزياء", url: "https://sites.google.com/site/guezouriorg/", icon: "fa-calculator", category: "متخصص" },
+                { name: "أكاديمية خان (بالعربية)", url: "https://ar.khanacademy.org/", icon: "fa-chalkboard-teacher", category: "دولي" },
+                { name: "موقع PhET للمحاكاة (جامعة كولورادو)", url: "https://phet.colorado.edu/ar/", icon: "fa-atom", category: "متخصص فيزياء/كيمياء" }
+            ];
+
+            function saveResourcesToLocalStorage() {
+                localStorage.setItem('clubResources', JSON.stringify(resources));
+            }
+
+            function init() {
+                populateLevels();
+                populateUsefulLinks();
+                setupEventListeners();
+                updateCopyrightYear();
+                const hash = window.location.hash;
+                if (hash && hash.startsWith('#resource-view-')) {
+                    const levelId = hash.substring('#resource-view-'.length);
+                    const level = levels.find(l => l.id === levelId);
+                    if (level) {
+                        showResourcesForLevel(level);
+                    } else {
+                        navigateToSection('#level-selection');
+                    }
+                } else {
+                     navigateToSection(hash || '#level-selection');
+                }
+            }
+
+            function updateCopyrightYear() {
+                if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+            }
+
+            function navigateToSection(sectionId) {
+                sections.forEach(section => {
+                    if (`#${section.id}` === sectionId || section.id === sectionId) { // Handle with or without #
+                        section.classList.remove('inactive-section');
+                        section.classList.add('active-section');
+                        document.title = `نادي العلوم الفيزيائية - ${section.querySelector('h2') ? section.querySelector('h2').textContent : 'الرئيسية'}`;
+                    } else {
+                        section.classList.remove('active-section');
+                        section.classList.add('inactive-section');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active-link');
+                    if (link.getAttribute('href') === sectionId) {
+                        link.classList.add('active-link');
+                    }
+                });
+                 window.scrollTo(0, 0);
+            }
+
+            function setupEventListeners() {
+                menuToggle.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
+                    const isExpanded = mainNav.classList.contains('active');
+                    menuToggle.setAttribute('aria-expanded', isExpanded);
+                    menuToggle.innerHTML = isExpanded ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                });
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = link.getAttribute('href');
+                        navigateToSection(targetId);
+                        window.location.hash = targetId;
+                        if (mainNav.classList.contains('active')) {
+                            mainNav.classList.remove('active');
+                            menuToggle.setAttribute('aria-expanded', 'false');
+                            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                        }
+                    });
+                });
+
+                backToLevelsBtn.addEventListener('click', () => {
+                    window.location.hash = '#level-selection';
+                    navigateToSection('#level-selection');
+                });
+                if(closeModalBtn) closeModalBtn.addEventListener('click', closeModalView); // For resource view modal
+
+                addResourceBtn.addEventListener('click', () => {
+                    if (currentSelectedLevelData) {
+                        openAddResourceModal(currentSelectedLevelData.id, currentSelectedLevelData.name);
+                    } else {
+                        alert("يرجى اختيار شعبة أولاً لعرض مواردها ثم إضافة مورد جديد.");
+                    }
+                });
+                if(closeAddResourceModalBtn) closeAddResourceModalBtn.addEventListener('click', closeAddResourceModal);
+                resourceTypeSelect.addEventListener('change', updateAddFormVisibility);
+                addResourceForm.addEventListener('submit', handleAddResourceSubmit);
+
+                window.addEventListener('click', (event) => {
+                    if (event.target == modal) closeModalView();
+                    if (event.target == addResourceModal) closeAddResourceModal();
+                });
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === "Escape") {
+                        if (modal && modal.style.display === "block") closeModalView();
+                        if (addResourceModal && addResourceModal.style.display === "block") closeAddResourceModal();
+                    }
+                });
+            }
+
+            function populateLevels() {
+                levelsGrid.innerHTML = '';
+                levels.forEach((level, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('level-card');
+                    card.dataset.levelId = level.id;
+                    card.innerHTML = `
+                        <div class="color-bar" style="background-color: ${level.color};">
+                            <span class="level-number">${index + 1}</span>
+                        </div>
+                        <div class="level-card-content">
+                            <i class="fas ${level.icon || 'fa-graduation-cap'} fa-2x" style="color: ${level.color}; margin-bottom: 10px;"></i>
+                            <h3>${level.name}</h3>
+                            <p>${level.subtitle}</p>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => showResourcesForLevel(level));
+                    levelsGrid.appendChild(card);
+                });
+            }
+
+            function showResourcesForLevel(level) {
+                currentSelectedLevelData = level;
+                navigateToSection('#resource-view');
+                resourceTitleHeading.textContent = `موارد: ${level.name}`;
+                resourceLevelInfo.innerHTML = `<i class="fas ${level.icon || 'fa-graduation-cap'}" style="color: ${level.color};"></i> ${level.name}`;
+                populateResources(level.id);
+                document.title = `موارد ${level.name} - نادي العلوم الفيزيائية`;
+                window.location.hash = `resource-view-${level.id}`;
+            }
+
+            function populateResources(levelId) {
+                resourcesGridEl.innerHTML = '';
+                const levelResources = resources[levelId] || [];
+                if (levelResources.length === 0) {
+                    resourcesGridEl.innerHTML = `<p class="no-resources">لا توجد موارد متاحة لهذه الشعبة حاليًا. يمكنك إضافة موارد جديدة!</p>`;
+                    return;
+                }
+                levelResources.forEach(resource => {
+                    const card = document.createElement('div');
+                    card.classList.add('resource-card');
+                    card.innerHTML = `
+                        <i class="fas ${resource.icon} resource-icon" style="background-color: ${resource.color};"></i>
+                        <h3>${resource.name}</h3>
+                        <small style="color: #555;">${resource.type}</small>
+                    `;
+                    card.addEventListener('click', () => openResourceViewModal(resource));
+                    resourcesGridEl.appendChild(card);
+                });
+            }
+            
+            function populateUsefulLinks() {
+                const linksListEl = document.querySelector('#useful-links .useful-links-list');
+                linksListEl.innerHTML = '';
+                usefulLinksData.forEach(link => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <a href="${link.url}" target="_blank" rel="noopener noreferrer">
+                            <i class="fas ${link.icon || 'fa-link'}"></i>
+                            ${link.name}
+                        </a>
+                    `;
+                    linksListEl.appendChild(listItem);
+                });
+            }
+
+            function openAddResourceModal(levelId, levelName) {
+                currentAddingLevelId = levelId;
+                addModalTitleEl.textContent = `إضافة مورد جديد لـ: ${levelName}`;
+                addResourceForm.reset();
+                updateAddFormVisibility();
+                addResourceModal.style.display = 'block';
+                addResourceModal.style.opacity = '0';
+                setTimeout(() => { addResourceModal.style.opacity = '1'; }, 10);
+            }
+
+            function closeAddResourceModal() {
+                addResourceModal.style.opacity = '0';
+                setTimeout(() => {
+                    addResourceModal.style.display = 'none';
+                }, 300);
+            }
+            
+            function closeModalView() { // Renamed from closeModal to avoid conflict if any
+                if(modal) {
+                    modal.style.opacity = '0';
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 300);
+                }
+            }
+
+
+            function updateAddFormVisibility() {
+                const selectedType = resourceTypeSelect.value;
+                fileUploadGroup.style.display = selectedType === 'uploadedFile' ? 'block' : 'none';
+                linkInputGroup.style.display = (selectedType === 'driveLink' || selectedType === 'link') ? 'block' : 'none';
+                textContentGroup.style.display = selectedType === 'text' ? 'block' : 'none';
+
+                resourceFileInput.required = selectedType === 'uploadedFile';
+                resourceLinkInput.required = (selectedType === 'driveLink' || selectedType === 'link');
+                resourceTextInput.required = selectedType === 'text';
+            }
+
+            function handleAddResourceSubmit(event) {
+                event.preventDefault();
+                if (!currentAddingLevelId) {
+                    alert("خطأ: لم يتم تحديد الشعبة لإضافة المورد إليها.");
+                    return;
+                }
+                const newResource = {
+                    name: resourceNameInput.value.trim(),
+                    description: resourceDescriptionInputModal.value.trim() || "",
+                    sourceType: resourceTypeSelect.value,
+                    sourceValue: null,
+                    icon: "fa-question-circle",
+                    color: "#6c757d",
+                    type: ""
+                };
+                switch (newResource.sourceType) {
+                    case 'uploadedFile':
+                        const file = resourceFileInput.files[0];
+                        if (!file) { alert("يرجى اختيار ملف للرفع."); return; }
+                        newResource.sourceValue = URL.createObjectURL(file);
+                        newResource.fileName = file.name;
+                        newResource.icon = getIconForFileType(file.type, file.name);
+                        newResource.color = getColorForFileType(file.type, file.name);
+                        newResource.type = "ملف مرفوع";
+                        break;
+                    case 'driveLink':
+                        newResource.sourceValue = resourceLinkInput.value.trim();
+                        if (!isValidUrl(newResource.sourceValue) || !newResource.sourceValue.includes('drive.google.com')) {
+                            alert("الرجاء إدخال رابط Google Drive صالح."); return;
+                        }
+                        newResource.icon = "fab fa-google-drive"; newResource.color = "#0F9D58"; newResource.type = "ملف Drive";
+                        break;
+                    case 'link':
+                        newResource.sourceValue = resourceLinkInput.value.trim();
+                        if (!isValidUrl(newResource.sourceValue)) { alert("الرجاء إدخال رابط صالح."); return; }
+                        newResource.icon = "fa-link"; newResource.color = "#17a2b8"; newResource.type = "رابط خارجي";
+                        break;
+                    case 'text':
+                        newResource.sourceValue = resourceTextInput.value.trim();
+                        if (!newResource.sourceValue) { alert("الرجاء إدخال محتوى نصي."); return; }
+                        newResource.icon = "fa-file-alt"; newResource.color = "#6610f2"; newResource.type = "محتوى نصي";
+                        break;
+                    default: alert("نوع مورد غير معروف."); return;
+                }
+                if (!resources[currentAddingLevelId]) resources[currentAddingLevelId] = [];
+                resources[currentAddingLevelId].push(newResource);
+                saveResourcesToLocalStorage();
+                populateResources(currentAddingLevelId);
+                closeAddResourceModal();
+                alert("تمت إضافة المورد بنجاح!");
+            }
+
+            function isValidUrl(string) {
+                try { new URL(string); return true; } catch (_) { return false; }
+            }
+
+            function getIconForFileType(fileType, fileName) {
+                const ext = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+                if (fileType.startsWith('image/') || ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) return 'fa-file-image';
+                if (fileType.startsWith('audio/') || ['mp3', 'wav', 'ogg'].includes(ext)) return 'fa-file-audio';
+                if (fileType.startsWith('video/') || ['mp4', 'webm', 'ogv'].includes(ext)) return 'fa-file-video';
+                if (fileType === 'application/pdf' || ext === 'pdf') return 'fa-file-pdf';
+                if (fileType.includes('word') || ['doc', 'docx'].includes(ext)) return 'fa-file-word';
+                if (fileType.includes('excel') || ['xls', 'xlsx'].includes(ext)) return 'fa-file-excel';
+                if (fileType.includes('powerpoint') || ['ppt', 'pptx'].includes(ext)) return 'fa-file-powerpoint';
+                if (['zip', 'rar', '7z'].includes(ext) || fileType.includes('archive')) return 'fa-file-archive';
+                return 'fa-file';
+            }
+
+            function getColorForFileType(fileType, fileName) {
+                const ext = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+                if (fileType === 'application/pdf' || ext === 'pdf') return '#dc3545';
+                if (fileType.includes('word') || ['doc', 'docx'].includes(ext)) return '#007bff';
+                if (fileType.includes('excel') || ['xls', 'xlsx'].includes(ext)) return '#28a745';
+                if (fileType.includes('powerpoint') || ['ppt', 'pptx'].includes(ext)) return '#fd7e14';
+                if (fileType.startsWith('image/')) return '#6f42c1';
+                return '#6c757d';
+            }
+
+            function openResourceViewModal(resource) { // Renamed from openResourceModal
+                modalTitle.textContent = resource.name;
+                modalDescription.textContent = resource.description || "لا يوجد وصف لهذا المورد.";
+                modalBody.innerHTML = '';
+                modalActionLink.style.display = 'none';
+                modalActionLink.removeAttribute('download');
+
+                if (resource.sourceType === 'text') {
+                    modalBody.innerHTML = `<p style="white-space: pre-wrap;">${resource.sourceValue}</p>`;
+                } else if (resource.sourceType === 'uploadedFile') {
+                    modalActionLink.href = resource.sourceValue;
+                    modalActionLinkText.textContent = 'تحميل الملف';
+                    modalActionLinkIcon.className = 'fas fa-download';
+                    if (resource.fileName) modalActionLink.setAttribute('download', resource.fileName);
+                    modalActionLink.style.display = 'inline-block';
+                    const fileTypeFromName = resource.fileName ? getFileTypeFromName(resource.fileName) : '';
+                    if (resource.sourceValue.startsWith('blob:')) {
+                         if (fileTypeFromName.startsWith('image/')) {
+                            modalBody.innerHTML = `<img src="${resource.sourceValue}" alt="${resource.name}" style="max-width: 100%; max-height: 50vh; display: block; margin: 10px auto;">`;
+                        } else if (fileTypeFromName === 'application/pdf') {
+                            modalBody.innerHTML = `<iframe src="${resource.sourceValue}" style="width:100%; height:60vh;" frameborder="0"></iframe>`;
+                        } else {
+                            modalBody.innerHTML = `<p>معاينة هذا النوع من الملفات غير مدعومة مباشرة. يمكنك تحميله.</p>`;
+                        }
+                    }
+                } else if (resource.sourceType === 'file') {
+                    modalActionLink.href = resource.sourceValue;
+                    modalActionLinkText.textContent = 'تحميل الملف';
+                    modalActionLinkIcon.className = 'fas fa-download';
+                    const fileName = resource.sourceValue.substring(resource.sourceValue.lastIndexOf('/') + 1);
+                    modalActionLink.setAttribute('download', fileName);
+                    modalActionLink.style.display = 'inline-block';
+                    if (resource.sourceValue.endsWith('.pdf')) {
+                         modalBody.innerHTML = `<iframe src="${resource.sourceValue}" style="width:100%; height:60vh;" frameborder="0"></iframe>`;
+                    } else if (/\.(jpg|jpeg|png|gif)$/i.test(resource.sourceValue)) {
+                         modalBody.innerHTML = `<img src="${resource.sourceValue}" alt="${resource.name}" style="max-width: 100%; max-height: 50vh; display: block; margin: 10px auto;">`;
+                    }
+                } else if (resource.sourceType === 'link' || resource.sourceType === 'driveLink') {
+                    modalActionLink.href = resource.sourceValue;
+                    modalActionLinkText.textContent = 'زيارة الرابط';
+                    modalActionLinkIcon.className = 'fas fa-external-link-alt';
+                    modalActionLink.style.display = 'inline-block';
+                    modalBody.innerHTML = `<p>سيتم فتح الرابط في نافذة جديدة: <a href="${resource.sourceValue}" target="_blank" rel="noopener noreferrer">${resource.sourceValue}</a></p>`;
+                    if (resource.sourceType === 'driveLink' && (resource.sourceValue.includes('/preview') || resource.sourceValue.includes('/view'))) {
+                        let embedUrl = resource.sourceValue.replace('/view', '/preview').replace('/edit', '/preview');
+                        const fileIdMatch = resource.sourceValue.match(/file\/d\/([a-zA-Z0-9_-]+)/);
+                        if (!embedUrl.includes('/preview') && fileIdMatch && fileIdMatch[1]) {
+                             embedUrl = `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
+                        }
+                         modalBody.innerHTML += `<br><p>محاولة تضمين المعاينة:</p><iframe src="${embedUrl}" style="width:100%; height:50vh; border:0;" allowfullscreen></iframe>`;
+                    }
+                }
+                
+                modal.style.display = 'block';
+                modal.style.opacity = '0';
+                setTimeout(() => { modal.style.opacity = '1'; }, 10);
+            }
+
+            function getFileTypeFromName(fileName) {
+                const extension = fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+                if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) return 'image/' + (extension === 'jpg' ? 'jpeg' : extension);
+                if (extension === 'pdf') return 'application/pdf';
+                if (['doc', 'docx'].includes(extension)) return 'application/msword';
+                return '';
+            }
+            
+            init();
+        });
+    </script>
+</body>
+</html>
